@@ -11,5 +11,7 @@ clean:
 	sudo rm -f *.bin
 	sudo rm -f *.img
 
-bochs:
+
+.PHONY: bochs
+bochs: master.img
 	bochs -q

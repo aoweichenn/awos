@@ -6,6 +6,11 @@
       <MakefileProjectSettings>
         <option name="cleanTarget" value="master.img" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/source/boot" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/source/boot" />
+          </set>
+        </option>
         <option name="version" value="2" />
       </MakefileProjectSettings>
     </option>
