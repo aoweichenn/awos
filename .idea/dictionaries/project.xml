@@ -1,8 +1,42 @@
 <component name="ProjectDictionaryState">
   <dictionary name="project">
     <words>
+      <w>athlon</w>
+      <w>biosdev</w>
       <w>bochsrc</w>
+      <w>bootsig</w>
+      <w>cmosimage</w>
+      <w>ehci</w>
+      <w>extfpuirq</w>
+      <w>floppya</w>
+      <w>floppyb</w>
+      <w>fsgsbase</w>
+      <w>ioaddr</w>
+      <w>iodebug</w>
+      <w>logprefix</w>
+      <w>mbutton</w>
+      <w>midiout</w>
+      <w>midioutdrv</w>
+      <w>movbe</w>
+      <w>msrs</w>
+      <w>mwait</w>
+      <w>ohci</w>
+      <w>optramimage</w>
+      <w>optromimage</w>
+      <w>parport</w>
+      <w>pcid</w>
+      <w>romimage</w>
       <w>sectsize</w>
+      <w>smep</w>
+      <w>vgabios</w>
+      <w>vgaromimage</w>
+      <w>wavein</w>
+      <w>waveindrv</w>
+      <w>waveoutdrv</w>
+      <w>xapic</w>
+      <w>xhci</w>
+      <w>xsave</w>
+      <w>xsaveopt</w>
     </words>
   </dictionary>
 </component>
