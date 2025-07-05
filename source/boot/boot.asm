@@ -28,7 +28,7 @@ _start:
     ; 设置文本模式并清除屏幕
     mov ax, 3
     int 0x10
-
+    jmp error
 ;    ; Bochs 调试断点魔数（magic breakpoint）
 ;    xchg bx, bx
     ; 调用打印函数
@@ -48,8 +48,16 @@ _start:
 
 ; 初始化字符串
 booting_msg db "Booting AWOS...", 10, 13, 0
+error_msg db "Booting Error!!!", 10, 13, 0
+
 
 ; ===== 子函数：打印字符串（SI=字符串地址）=====
+error:
+    mov si, error_msg
+    call print
+    hlt
+    jmp $
+
 print:
     mov ah, 0x0e
 .loop:
