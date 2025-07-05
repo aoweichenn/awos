@@ -10,6 +10,7 @@ master.img: boot.bin
 clean:
 	sudo rm -f *.bin
 	sudo rm -f *.img
+	sudo rm -f *.lock
 
 
 .PHONY: bochs
