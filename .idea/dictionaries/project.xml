@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="project">
     <words>
+      <w>.readw:</w>
       <w>athlon</w>
       <w>biosdev</w>
       <w>bochsrc</w>
@@ -25,6 +26,7 @@
       <w>optromimage</w>
       <w>parport</w>
       <w>pcid</w>
+      <w>readw:</w>
       <w>romimage</w>
       <w>sectsize</w>
       <w>smep</w>
