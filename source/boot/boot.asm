@@ -46,12 +46,12 @@ _start:
 
 ; 初始化字符串
 booting_msg db "Booting AWOS...", 10, 13, 0
-error_msg db "Booting Error!!!", 10, 13, 0
+booting_error_msg db "Booting Error!!!", 10, 13, 0
 
 
 ; ===== 子函数：打印字符串（SI=字符串地址）=====
 error:
-    mov si, error_msg
+    mov si, booting_error_msg
     call print
     hlt
     jmp $
