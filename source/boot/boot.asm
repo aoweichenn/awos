@@ -5,7 +5,6 @@ bits 16
 
 ; ===== 数据段（存放已初始化的全局数据）=====
 section .data
-    booting_msg2 db "Booting AWOS...", 10, 13, 0
 
 ; ===== BSS段（预留未初始化内存空间）=====
 ; 本程序暂时没有未初始化的内存空间
@@ -28,22 +27,21 @@ _start:
     ; 设置文本模式并清除屏幕
     mov ax, 3
     int 0x10
-    jmp error
-;    ; Bochs 调试断点魔数（magic breakpoint）
-;    xchg bx, bx
-    ; 调用打印函数
     mov si, booting_msg
     call print
 
     ; 读取的目标内存
     mov edi, 0x1000
     ; 起始扇区
-    mov ecx, 0
+    mov ecx, 2
     ; 扇区数量，从起始扇区 0 读取 1 个扇区的数据到目标内存 0x1000 处
-    mov bl, 1
+    mov bl, 4
     call read_disk
-    xchg bx, bx
-    ; 阻塞
+
+    cmp word [0x1000], 0x55aa
+    jnz error
+    jmp 0:0x1002
+
     jmp $
 
 ; 初始化字符串

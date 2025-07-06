@@ -2,8 +2,11 @@
 ; 魔数 0x55aa，用于判断有无错误
 dw 0x55aa
 
-mov si, loading
+mov si, loading_msg
 call print
+
+; 阻塞
+jmp $
 
 print:
     mov ah, 0x0e
@@ -17,5 +20,7 @@ print:
 .done:
     ret
 
-loading:
+
+
+loading_msg:
     db "Loading AWOS...", 10, 13, 0
