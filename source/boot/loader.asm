@@ -54,7 +54,6 @@ prepare_protected_mode:
     mov eax, cr0
     or eax, 1
     mov cr0, eax
-    xchg bx, bx
     ; 用跳转来刷新缓存, 并启用保护模式
     jmp dword code_selector:protect_mode
 
@@ -100,11 +99,107 @@ protect_mode:
     mov ss, ax
 
     mov esp, 0x10000; 修改栈顶
-    xchg bx, bx
-    mov byte [0xb8000], 'P'
-    mov byte [0x200000], 'p'
 
-jmp $
+    ; 读取的目标内存
+    mov edi, 0x10000
+    ; 起始扇区
+    mov ecx, 10
+    ; 扇区数量，从起始扇区 0 读取 1 个扇区的数据到目标内存 0x1000 处
+    mov bl, 200
+    call read_disk
+
+    xchg bx, bx
+    jmp dword code_selector:0x10000
+    ; 表示出错
+    ud2
+
+read_disk:
+    ; 设置读写扇区的数量
+    ; dx => 0x1f2
+    mov dx, 0x1f2
+    mov al, bl
+    out dx, al
+
+    ; dx => 0x1f3
+    inc dx
+    ; 起始扇区的前 8 位，
+    mov al, cl
+    out dx, al
+
+    ; dx => 0x1f4
+    inc dx
+    shr ecx, 8
+    ; 起始扇区的中 8 位，
+    mov al, cl
+    out dx, al
+
+    ; dx => 0x1f5
+    inc dx
+    shr ecx, 8
+    ; 起始扇区的高 8 位，
+    mov al, cl
+    out dx, al
+
+    ; dx => 0x1f6
+    inc dx
+    shr ecx, 8
+    ; 将 cl 高 4 位置为 0
+    and cl, 0b1111
+    ; 主盘 --- LBA 模式
+    mov al, 0b1110_0000
+    or al, cl
+    out dx, al
+
+    ; dx => 0x1f7
+    inc dx
+    ; 读硬盘
+    mov al, 0x20
+    out dx, al
+
+    ; 清空 ecx, 性能更好
+    xor ecx, ecx
+    mov cl, bl
+
+    .read:
+        ; 读取时会修改 cx，所以需要入栈保存 cx
+        push cx
+        ; 等待数据读取完毕
+        call .waits
+        ; 读取一个扇区
+        call .reads
+        ; 恢复 cx
+        pop cx
+        loop .read
+    ret
+
+    .waits:
+        mov dx, 0x1f7
+        .check:
+            in al, dx
+            ; 直接跳转到下一行，消耗时间等待硬盘准备好
+            jmp $ + 2
+            jmp $ + 2
+            jmp $ + 2
+            and al, 0b1000_1000
+            cmp al, 0b0000_1000
+            jnz .check
+        ret
+
+    .reads:
+        mov dx, 0x1f0
+        ; 一个扇区 256 字节
+        mov cx, 256
+        .readw:
+            in ax, dx
+            ; 直接跳转到下一行，消耗时间等待硬盘准备好
+            jmp $ + 2
+            jmp $ + 2
+            jmp $ + 2
+            mov [edi], ax
+            add edi, 2
+            loop .readw
+        ret
+
 
 code_selector equ (1 << 3)
 data_selector equ (2 << 3)
